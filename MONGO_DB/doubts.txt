@@ -1,0 +1,1 @@
+10. Find companies where EPS is greater than the average EPS.

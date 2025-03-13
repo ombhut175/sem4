@@ -1,3 +1,5 @@
+dont forget []
+
 1. Display distinct city.
     db.student.aggregate([{$group:{_id:"$CITY"}}])
 
@@ -53,6 +55,66 @@
     db.student.aggregate([{$match : {CITY : "Rajkot"}},{$group : {_id : "$CITY", avgFees : {$avg:"$FEES"}} }])
 
 19. Group by Sem and calculate both the total and average Fees, then sort by total fees in descending order.
-    db.student.aggregate([{$group : {_id : "$SEM", avgFees : {$avg:"$FEES"} ,totalFees: {$sum:"$FEES"}} },{$sort:1}}])
+    db.student.aggregate([{$group : {_id : "$SEM", avgFees : {$avg:"$FEES"} ,totalFees: {$sum:"$FEES"}} },{$sort: {totalFees : -1}}])
 
 20. Find the top 3 cities with the highest total Fees collected by summing up all students' fees in those cities.
+    db.student.aggregate([{$group : {_id : "$CITY" ,totalFees : {$sum : "$FEES"}}},{$sort : {totalFees : -1}},{$limit : 3}])
+
+
+PART--B:-
+
+3. Calculate the total sales of all companies
+    db.Stock.aggregate([{$group : {_id : null,totalSales : {$sum : "$sales"}}}])
+
+4. Find the average profit for companies in each sector.
+    db.Stock.aggregate([{$group : {_id : "$sector",avgProfit : {$avg : "$profit"}}}])
+
+5. Get the count of companies in each sector
+    db.Stock.aggregate([{$group : {_id : "$sector",count : {$sum : 1}}}])
+
+6. Find the company with the highest PE ratio.
+    db.Stock.aggregate([{$sort : {pe : -1}},{$limit: 1}])
+
+7. Filter companies with PE ratio greater than 20.(Use: Aggregate)
+    db.Stock.aggregate([{$match : {pe : {$gte : 20}}}])
+
+8. Calculate the total profit of companies with sales greater than 250,000.
+    db.Stock.aggregate([{$match : {sales : {$gte : 250000}}},{$group : {_id : null,totalProfit : {$sum : "$profit"}}}])
+
+9. Project only the company name and profit fields.(Use: Aggregate)
+    db.Stock.aggregate([{$project : {company : 1,profit : 1,_id : 0}}])
+
+10. Find companies where EPS is greater than the average EPS.
+    var avgEps = db.Stock.aggregate([{$group : {_id : null,avgEps : {$avg : "$eps"}}}]).toArray()[0].avgEps
+
+    db.Stock.find({eps : {$gt : avgEps}})
+
+
+11. Group companies by sector and get the maximum sales in each sector.
+    db.Stock.aggregate([{$group : {_id : "$sector",maxSales : {$max : "$sales"}}}])
+
+12. Calculate the total sales and total profit of companies in each sector.
+    db.Stock.aggregate([{$group : {_id : "$sector",totalSales : {$sum : "$sales"},totalProfit : {$sum : "$profit"}}}])
+
+13. Sort companies by profit in descending order.(Use: Aggregate)
+    db.Stock.aggregate([{$sort : {profit : -1}}])
+
+14. Find the average ROE across all companies.
+    db.Stock.aggregate([{$group : {_id:null,avgRoe : {$avg : "$roe"}}}])
+
+15. Group companies by sector and calculate both the minimum and maximum EPS.
+    db.Stock.aggregate([{$group : {_id : "$sector",minEps : {$min : "$eps"},maxEps : {$max : "$eps"}}}])
+
+Part – C
+1. Count the number of companies with profit greater than 30,000.
+2. Get the total profit by sector and sort by descending total profit.
+3. Find the top 3 companies with the highest sales.
+4. Calculate the average PE ratio of companies grouped by sector.
+5. Get the sum of sales and profit for each company.
+6. Find companies with sales less than 400,000 and sort them by sales.
+7. Group companies by sector and find the total number of companies in each sector.
+8. Get the average ROE for companies with sales greater than 200,000.
+9. Find the maximum profit in each sector.
+10. Get the total sales and count of companies in each sector.
+11. Project fields where profit is more than 20,000 and only show company and profit.
+12. Find companies with the lowest ROE and sort them in ascending order.(Use: Aggregate)
