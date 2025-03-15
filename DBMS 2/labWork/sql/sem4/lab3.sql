@@ -63,6 +63,7 @@ END
 
 
 PR_EMPLOYEE_FIRST_LAST_NAME NULL,'DOE'
+PR_EMPLOYEE_FIRST_LAST_NAME @LastName = 'DOE'
 -- 2. Create a Procedure that will accept Department Name and based on that gives employees list who
 -- belongs to that department. 
 CREATE OR ALTER PROCEDURE PR_DEPARTMENT_WISE_EMPLOYEE_INFO
@@ -116,8 +117,7 @@ SELECT * FROM Employee
 PR_DATE_DETAILS '2010-06-15 00:00:00.000'
 
 -- Part – B
--- 6. Create a Procedure that accepts Gender’s first letter only and based on that employee details will be
--- served.
+-- 6. Create a Procedure that accepts Gender’s first letter only and based on that employee details will be served.
 CREATE OR ALTER PROCEDURE PR_GENDER_EMPLOYEE_DETAILS
 @FIRSTLETTER VARCHAR(1)
 AS
@@ -127,8 +127,7 @@ BEGIN
 END 
 
 PR_GENDER_EMPLOYEE_DETAILS 'M'
--- 7. Create a Procedure that accepts First Name or Department Name as input and based on that employee
--- data will come.
+-- 7. Create a Procedure that accepts First Name or Department Name as input and based on that employee data will come.
 CREATE OR ALTER PROCEDURE PR_FIRST_OR_DEPT_DETAILS
 @FirstName VARCHAR(50) = NULL,
 @DepartmentName VARCHAR(50) = NULL

@@ -1,0 +1,8 @@
+27. Find employees whose names contain exactly one vowel.
+    db.employee.find({ENAME : /^[^aeiou]*[aeiou][^aeiou]*$/i})
+
+8. Find students whose names contain exactly one vowel.
+    db.Student.find({SNAME : /[^aeiou]*[aeiou][^aeiou]*/i})
+
+9. Find students whose names start and end with the same letter.
+    db.Student.find({SNAME : /^([a-z]).*\1$/i})

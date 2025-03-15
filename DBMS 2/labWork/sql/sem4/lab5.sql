@@ -63,6 +63,7 @@ BEGIN
     SET @Operation = 'INSERTED'
 
     SELECT @ID=PersonID,@PERSONNAME=PersonName FROM inserted
+
     INSERT INTO PersonLog (PersonID, PersonName, Operation, UpdateDate) VALUES 
     (@ID,@PERSONNAME,@Operation,@UpdateDate)
 
@@ -183,6 +184,7 @@ DROP TRIGGER TR_PERSONINFO_DELETE_INSTEADOF;
 SELECT * FROM PersonInfo;
 -- 4. Create a trigger that fires on INSERT operation on the PersonInfo table to convert person name into
 -- uppercase whenever the record is inserted.
+
 CREATE TRIGGER TR_PERSONINFO_CAPITALNAME_RECORD
 ON PERSONINFO
 AFTER INSERT
@@ -252,6 +254,39 @@ BEGIN
     SELECT PersonID,PersonName,Salary,JoiningDate,City,AGE,BirthDate FROM inserted
     WHERE Salary > (SELECT Salary FROM deleted)
 END
+
+CREATE OR ALTER TRIGGER TR_PERSONINFO_LIMIT_SALARY_DECREASE
+ON PERSONINFO
+INSTEAD OF UPDATE
+AS
+BEGIN
+    DECLARE @OLDSALARY INT,@NEWSALARY INT,@PersonID INT
+
+    SELECT @OLDSALARY = Salary FROM deleted
+    SELECT @NEWSALARY = Salary,@PersonID = PersonID FROM inserted
+    
+    IF(@NEWSALARY > ((@OLDSALARY) - (@OLDSALARY * 0.1)))
+        UPDATE PersonInfo
+        SET Salary = @NEWSALARY
+        WHERE PersonID = @PersonID
+END
+
+CREATE OR ALTER TRIGGER TR_PERSONINFO_LIMIT_SALARY_DECREASE
+ON PERSONINFO
+INSTEAD OF UPDATE
+AS
+BEGIN
+    -- Update salaries, but prevent decreasing more than 10%
+    UPDATE P
+    SET P.Salary = 
+        CASE 
+            WHEN I.Salary >= D.Salary * 0.9 THEN I.Salary  
+            ELSE D.Salary * 0.9
+        END
+    FROM PersonInfo P
+    JOIN inserted I ON P.PersonID = I.PersonID
+    JOIN deleted D ON P.PersonID = D.PersonID;
+END;
 
 
 DROP TRIGGER TR_PERSONINFO_LIMIT_SALARY_DECREASE;

@@ -41,6 +41,7 @@ DECLARE @PRODUCT_ID INT,@PRODUCT_NAME VARCHAR(250),@PRICE DECIMAL(10, 2);
 DEALLOCATE CURSOR_PRODUCT;
 
 -- 2. Create a cursor Product_Cursor_Fetch to fetch the records in form of ProductID_ProductName. (Example: 1_Smartphone)
+
 DECLARE @PRODUCT_ID INT,@PRODUCT_NAME VARCHAR(250);
 
     DECLARE CURSOR_PRODUCT_FETCH CURSOR

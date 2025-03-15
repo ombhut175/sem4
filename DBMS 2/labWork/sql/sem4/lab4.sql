@@ -58,6 +58,19 @@ RETURN(
     SELECT DISTINCT FIRSTNAME FROM PERSON
 )
 
+CREATE OR ALTER FUNCTION FN_UNIQUE_FIRST_NAME_2()
+RETURNS TABLE
+AS
+RETURN(
+    SELECT FIRSTNAME FROM PERSON
+    HAVING FirstName IN (
+        SELECT FirstName FROM Person
+        GROUP BY FirstName
+        HAVING COUNT(*) = 1
+    )
+)
+
+
 SELECT * FROM DBO.FN_UNIQUE_FIRST_NAME()
 
 -- 6. Write a function to print number from 1 to N. (Using while loop)
@@ -69,7 +82,7 @@ BEGIN
     DECLARE @I INT
     SET @ANS=''
     SET @I = 1
-    WHILE (@I<@N)
+    WHILE (@I<=@N)
     BEGIN
         SET @ANS = @ANS + ' ' + CAST(@I AS VARCHAR)
         SET @I= @I + 1
@@ -154,7 +167,8 @@ BEGIN
     DECLARE @I INT = 1
     WHILE(@I<=20)
     BEGIN
-        SET @ANS = @ANS + @I
+        IF(@I % 2 = 0)
+            SET @ANS = @ANS + @I
         SET @I = @I + 1
     END
     RETURN @ans
@@ -199,6 +213,7 @@ BEGIN
 END
 
 SELECT DBO.FN_PRIME_OR_NOT(7)
+SELECT DBO.FN_PRIME_OR_NOT(6)
 
 -- 12. Write a function which accepts two parameters start date & end date, and returns a difference in days.
 
@@ -207,13 +222,12 @@ RETURNS DATE
 AS
 BEGIN
     DECLARE @ANS DATE
-    SET @ANS = DATEDIFF(DAY,@END,@START)
+    SET @ANS = DATEDIFF(DAY,@START,@END)
     RETURN @ANS
 END
 
 
--- 13. Write a function which accepts two parameters year & month in integer and returns total days each
--- year.
+-- 13. Write a function which accepts two parameters year & month in integer and returns total days each year.
 CREATE OR ALTER FUNCTION FN_DAYS_OF_MONTH_YEAR(
     @YEAR INT,
     @MONTH INT
@@ -223,6 +237,9 @@ AS
 BEGIN
     RETURN DAY(EOMONTH(DATEFROMPARTS(@YEAR,@MONTH,1)));
 END
+
+
+SELECT DATEFROMPARTS(2005,7,1)
 
 SELECT DBO.FN_DAYS_OF_MONTH_YEAR(2024,2);
 

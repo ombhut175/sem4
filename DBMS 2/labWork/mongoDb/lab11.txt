@@ -8,7 +8,7 @@
     db.employee.find({ENAME : {$regex : /^[sm]/i}})
 
 4. Find employees where city starts with A to M in your collection.
-    db.employee.find({CITY : {$regex : /^[am]/i}})
+    db.employee.find({CITY : {$regex : /^[a-m]/i}})
 
 5. Find employees where city name ends in ‘ney’.
     db.employee.find({CITY : {$regex : /ney$/i}})
@@ -43,7 +43,7 @@
     db.employee.find({CITY : /^new/i})
 
 18. Find employees whose CITY does not start with 'L'
-    db.employee.find({CITY : {$not: /l/i}})
+    db.employee.find({CITY : {$not: /^l/i}})
 
 19. Find employees whose CITY contains the word 'York'.
 
