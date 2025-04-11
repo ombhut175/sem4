@@ -335,6 +335,7 @@ PR_SALARYGT 55000
 CREATE OR ALTER PROCEDURE PR_HIGHEST_SALARY
 AS
 BEGIN
+
     -- Find the highest total salary among all departments
     DECLARE @MaxSalary INT;
 
@@ -372,16 +373,25 @@ END
 
 PR_DESIGNATION_LAST_10_YEAR 'CEO'
 
--- 14. Create a procedure to list the number of workers in each department who do not have a designation
--- assigned.
+-- 14. Create a procedure to list the number of workers in each department who do not have a designation assigned.
 
-CREATE OR ALTER PROCEDURE PR_NO_DESIGNATION
+CREATE PROCEDURE GetWorkersWithoutDesignationPerDepartment
 AS
 BEGIN
-    SELECT *
-    FROM Person
-    WHERE DesignationID IS NULL
-END
+    SELECT 
+        d.DepartmentName,
+        COUNT(p.PersonID) AS WorkersWithoutDesignation
+    FROM 
+        Department d
+    LEFT JOIN 
+        Person p ON d.DepartmentID = p.DepartmentID
+    WHERE 
+        p.DesignationID IS NULL
+    GROUP BY 
+         d.DepartmentName;
+END;
+
+
 
 -- 15. Create a procedure to retrieve the details of workers in departments where the average salary is above 12000.
 

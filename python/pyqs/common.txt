@@ -1,0 +1,3 @@
+Explain the advantages of python programming language.
+
+What is Polymorphism? Explain method overriding with an example.

@@ -47,7 +47,7 @@ RETURN(
     SELECT * FROM PERSON P
     WHERE P.FIRSTNAME LIKE 'B%'
 ) 
-
+                                    
 SELECT * FROM FN_FIRST_NAME();
 
 -- 5. Write a function which returns a table with unique first names from the person table.
@@ -66,7 +66,6 @@ RETURN(
     HAVING FirstName IN (
         SELECT FirstName FROM Person
         GROUP BY FirstName
-        HAVING COUNT(*) = 1
     )
 )
 

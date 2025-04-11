@@ -156,7 +156,7 @@ BEGIN
     SELECT @ID=PersonID,@PERSONNAME=PersonName FROM inserted
     SELECT @ID2=PersonID,@PERSONNAME2=PersonName FROM deleted
 
-    INSERT INTO PersonLog (PersonID, PersonName, Operation, UpdateDate) VALUES 
+    INSERT INTO PersonLog (PersonID, PersonName, Operation, UpdateDate)VALUES 
     (@ID,@PERSONNAME,'INSERTED',GETDATE())
     
     INSERT INTO PersonLog (PersonID, PersonName, Operation, UpdateDate) VALUES 
