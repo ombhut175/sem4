@@ -1,0 +1,15 @@
+### Comparing two values through a bar chart
+
+mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+visiters_ggl = [11000, 12000, 15000, 12500, 25000, 17000]
+visiters_yahoo = [12000, 11000, 17000, 11800, 20000, 20000]
+wd = 0.3
+x = range(len(mon))
+plt.bar( [i-wd/2 for i in x], visiters_ggl, width=wd, label="Google",color="c")
+plt.bar([ i+wd/2 for i in x], visiters_yahoo, width=wd, label ="Yahoo")
+plt.xticks(x,mon)
+plt.legend()
+plt.xlabel("Month")
+plt.ylabel("Visiters")
+plt.title("Visiters of Google/Yahoo of last 6 Months", color='g', fontsize=15, pad=25)
+plt.show()
